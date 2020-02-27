@@ -1,3 +1,4 @@
+def tomcat = "18.218.233.67"
 pipeline{
 	agent { label 'dev' }
 	stages{
@@ -25,6 +26,13 @@ pipeline{
 				
 			      }
 					   }
+		stage('deploy'){
+			steps{
+			sh "ssh $tomcat systemctl stop tomcat"
+			sh "scp target/*.war $tomcat:/var/lib/tomcat/webapps"	
+			sh "ssh $tomcat systemctl start tomcat"
+			}
+		}
 		
 		  }
 		}
